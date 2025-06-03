@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume - Architetto Roberto Dolfini</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Eventuali stili specifici per resume_page.html potranno essere aggiunti qui o in altro CSS -->
+    <style>
+        /* Aggiunta di padding per main-content per non sovrapporre header/footer */
+        .main-content {
+            padding-top: 80px; /* Altezza header + un po' di spazio */
+            padding-bottom: 120px; /* Altezza footer + un po' di spazio */
+            text-align: center; /* Mantenuto da istruzioni precedenti */
+        }
+    </style>
+</head>
+<body>
+    <div class="noise-background"></div>
+    <div class="noise-overlay"></div>
+    <div class="noise-grain"></div>
+
+    <div class="header">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-content">
+            <div class="menu-item" data-section="home">Home</div>
+            <div class="menu-item" data-section="portfolio">Portfolio</div>
+            <div class="menu-item" data-section="resume">Resume</div>
+            <div class="menu-item" data-section="contatti">Contatti</div>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main class="main-content">
+        <h1>Resume</h1>
+        <p>Il contenuto dettagliato del resume sarà inserito qui.</p>
+        <!-- Qui andrà il contenuto specifico del resume -->
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#" class="footer-link" data-popup="privacy">Privacy Policy</a>
+            <a href="#" class="footer-link" data-popup="cookie">Cookie Policy</a>
+            <a href="#" class="footer-link" data-popup="terms">Termini di Servizio</a>
+        </div>
+        <div class="footer-text">
+            Architetto Roberto Dolfini - Via del Leone 21 - n°albo OAR : 26585 - P.IVA 16120331000.
+        </div>
+        <p class="footer-text">Tutti i diritti riservati.</p>
+    </footer>
+
+    <!-- Script per hamburger menu -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const section = e.target.getAttribute('data-section');
+                if (section === 'home') {
+                    window.location.href = 'landing_page.html';
+                } else if (section === 'portfolio') {
+                    window.location.href = 'portfolio_page.html';
+                } else if (section === 'resume') {
+                    window.location.href = 'resume_page.html';
+                } else if (section === 'contatti') {
+                    window.location.href = 'contact_page.html';
+                }
+                closeMenu();
+            });
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && (sideMenu.classList.contains('active') || overlay.classList.contains('active'))) {
+                closeMenu();
+            }
+        });
+    </script>
+
+    <!-- Modal/Popup Policy Structure -->
+    <div id="policyPopup" class="popup-modal">
+        <div class="popup-modal-content">
+            <span class="popup-modal-close" id="closePolicyBtn">&times;</span>
+            <h3 id="popupTitle">Titolo Policy</h3>
+            <div id="popupBody">
+                <p>Il contenuto specifico della policy verrà caricato qui. L'utente potrà inserire il testo desiderato in questa sezione.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // --- Script per Policy Pop-up ---
+    const policyPopup = document.getElementById('policyPopup');
+    const popupTitle = document.getElementById('popupTitle');
+    const popupBody = document.getElementById('popupBody');
+    const closePolicyBtn = document.getElementById('closePolicyBtn');
+    const footerPolicyLinks = document.querySelectorAll('.footer-link[data-popup]');
+
+    const policyTexts = {
+        privacy: {
+            title: "Privacy Policy",
+            content: "Questo è il testo placeholder per la Privacy Policy. L'utente potrà inserire qui il contenuto dettagliato."
+        },
+        cookie: {
+            title: "Cookie Policy",
+            content: "Questo è il testo placeholder per la Cookie Policy. L'utente potrà inserire qui il contenuto dettagliato."
+        },
+        terms: {
+            title: "Termini di Servizio",
+            content: "Questo è il testo placeholder per i Termini di Servizio. L'utente potrà inserire qui il contenuto dettagliato."
+        }
+    };
+
+    function openPolicyPopup(type) {
+        if (policyTexts[type]) {
+            popupTitle.textContent = policyTexts[type].title;
+            popupBody.innerHTML = `<p>${policyTexts[type].content}</p>`;
+            policyPopup.style.display = 'flex';
+        }
+    }
+
+    function closePolicyPopup() {
+        policyPopup.style.display = 'none';
+    }
+
+    footerPolicyLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const popupType = this.getAttribute('data-popup');
+            openPolicyPopup(popupType);
+        });
+    });
+
+    closePolicyBtn.addEventListener('click', closePolicyPopup);
+
+    window.addEventListener('click', function(event) {
+        if (event.target == policyPopup) {
+            closePolicyPopup();
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && policyPopup.style.display === 'flex') {
+            closePolicyPopup();
+        }
+    });
+    </script>
+</body>
+</html>
