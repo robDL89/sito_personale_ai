@@ -1,164 +1,18 @@
+<!-- Updated to use external stylesheet, standardized header/footer/scripts -->
 <!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio - Arch. Roberto Dolfini</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Stili specifici per portfolio_page.html -->
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto Slab', serif;
-            background-color: #1a1a1a;
-            color: #f0f0f0;
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        /* Header e Menu Hamburger - identico al resume */
-        .header {
-            position: fixed;
-            top: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .hamburger {
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: transparent;
-            border: none;
-            padding: 0;
-            z-index: 1000;
-        }
-
-        .hamburger span {
-            width: 28px;
-            height: 2px;
-            background: #555;
-            margin: 4px 0;
-            transition: all 0.3s ease;
-            transform-origin: center;
-            display: block;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: translateY(5px) rotate(45deg);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-            transform: scaleX(0);
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: translateY(-15px) rotate(-45deg);
-        }
-
-        .hamburger:hover span {
-            background: #888;
-        }
-
-        /* Menu Laterale */
-        .side-menu {
-            position: fixed;
-            top: 0;
-            right: -300px;
-            width: 300px;
-            height: 100vh;
-            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
-            z-index: 999;
-            transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .side-menu.active {
-            right: 0;
-        }
-
-        .menu-content {
-            padding: 80px 40px 40px;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .menu-item {
-            padding: 15px 0;
-            border-bottom: 1px solid #404040;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            font-size: 18px;
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .menu-item:hover {
-            color: #ffffff;
-            padding-left: 10px;
-            border-bottom-color: #666;
-        }
-
-        .menu-item:last-child {
-            border-bottom: none;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* Effetti noise di sfondo */
-        .noise-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            opacity: 0.03;
-            background: 
-                radial-gradient(circle at 20% 80%, transparent 30%, rgba(255,255,255,0.03) 31%, rgba(255,255,255,0.03) 32%, transparent 33%),
-                radial-gradient(circle at 80% 20%, transparent 30%, rgba(255,255,255,0.03) 31%, rgba(255,255,255,0.03) 32%, transparent 33%),
-                radial-gradient(circle at 40% 40%, transparent 30%, rgba(255,255,255,0.02) 31%, rgba(255,255,255,0.02) 32%, transparent 33%);
-            background-size: 300px 300px, 250px 250px, 400px 400px;
-            animation: noiseShift 8s ease-in-out infinite alternate;
-        }
-
-        @keyframes noiseShift {
-            0% { transform: translate(0px, 0px); }
-            50% { transform: translate(-10px, 5px); }
-            100% { transform: translate(2px, -2px); }
-        }
-
         /* Layout principale Portfolio */
         .portfolio-container {
             min-height: 100vh;
-            padding: 80px 0 0;
+            padding-top: 80px; /* For fixed header */
+            padding-bottom: 120px; /* For fixed footer */
         }
 
         /* Hero Section */
@@ -170,20 +24,20 @@
             overflow: hidden;
         }
 
-        .hero-title {
+        .hero-section .hero-title { /* Scoping to portfolio's hero */
             font-size: 48px;
             font-weight: 300;
             margin-bottom: 20px;
             letter-spacing: 3px;
             opacity: 0;
-            animation: fadeInUp 1s ease 0.3s forwards;
+            animation: fadeInUp 1s ease 0.3s forwards; /* fadeInUp is in style.css */
             background: linear-gradient(135deg, #f0f0f0, #cccccc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .hero-subtitle {
+        .hero-section .hero-subtitle { /* Scoping to portfolio's hero */
             font-size: 20px;
             font-weight: 300;
             color: #b0b0b0;
@@ -193,7 +47,7 @@
             animation: fadeInUp 1s ease 0.5s forwards;
         }
 
-        .hero-description {
+        .hero-section .hero-description { /* Scoping to portfolio's hero */
             font-size: 16px;
             color: #d0d0d0;
             max-width: 600px;
@@ -253,16 +107,9 @@
             border: 1px solid #404040;
             cursor: pointer;
             opacity: 0;
-            animation: fadeInUp 1s ease forwards;
+            animation: fadeInUp 1s ease forwards; /* Animation timing handled by JS or inline style if needed for delay */
             position: relative;
         }
-
-        .portfolio-item:nth-child(1) { animation-delay: 0.2s; }
-        .portfolio-item:nth-child(2) { animation-delay: 0.4s; }
-        .portfolio-item:nth-child(3) { animation-delay: 0.6s; }
-        .portfolio-item:nth-child(4) { animation-delay: 0.8s; }
-        .portfolio-item:nth-child(5) { animation-delay: 1s; }
-        .portfolio-item:nth-child(6) { animation-delay: 1.2s; }
 
         .portfolio-item:hover {
             transform: translateY(-8px);
@@ -292,7 +139,7 @@
         }
 
         .portfolio-image::after {
-            content: "🏗️";
+            content: "🏗️"; /* Placeholder, actual images would be better */
             position: absolute;
             top: 50%;
             left: 50%;
@@ -322,7 +169,7 @@
             letter-spacing: 1px;
         }
 
-        .portfolio-description {
+        .portfolio-description { /* This is for inside the item, distinct from hero-description */
             font-size: 15px;
             color: #d0d0d0;
             line-height: 1.6;
@@ -399,108 +246,21 @@
             color: #f0f0f0;
         }
 
-        .coming-soon-item p {
+        .coming-soon-item p { /* Scope to coming-soon items */
             font-size: 14px;
             color: #b0b0b0;
             margin: 0;
         }
 
-        /* Footer - identico al resume */
-        .footer {
-            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
-            border-top: 1px solid #404040;
-            padding: 40px 0 30px;
-            margin-top: auto;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 40px;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            align-items: start;
-        }
-
-        .footer-section h4 {
-            font-size: 18px;
-            font-weight: 400;
-            color: #f0f0f0;
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-        }
-
-        .footer-section p, .footer-section li {
-            font-size: 14px;
-            color: #b0b0b0;
-            line-height: 1.6;
-            font-weight: 300;
-        }
-
-        .footer-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-section li {
-            margin-bottom: 8px;
-            padding-left: 15px;
-            position: relative;
-        }
-
-        .footer-section li::before {
-            content: "▸";
-            position: absolute;
-            left: 0;
-            color: #666;
-        }
-
-        .footer-section a {
-            color: #b0b0b0;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-section a:hover {
-            color: #f0f0f0;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #2a2a2a;
-            margin-top: 30px;
-            padding-top: 20px;
-            text-align: center;
-        }
-
-        .footer-bottom p {
-            font-size: 12px;
-            color: #888;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
-
-        /* Animazioni */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
         /* Modal per dettagli progetto */
-        .modal {
+        .modal { /* This is for project details, distinct from policy popup */
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
+            z-index: 2000; /* Ensure project modal is high, policy popup is 2000 as well, may need adjustment if both open */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -514,7 +274,7 @@
             visibility: visible;
         }
 
-        .modal-content {
+        .modal-content { /* Project modal content */
             background: #1a1a1a;
             border: 1px solid #404040;
             border-radius: 12px;
@@ -539,7 +299,7 @@
             align-items: center;
         }
 
-        .modal-close {
+        .modal-close { /* Project modal close */
             width: 30px;
             height: 30px;
             background: transparent;
@@ -558,7 +318,7 @@
             padding: 40px;
         }
 
-        .modal h3 {
+        .modal h3 { /* Scoped to project modal */
             font-size: 24px;
             font-weight: 400;
             color: #f0f0f0;
@@ -578,98 +338,40 @@
             opacity: 0.6;
         }
 
-        /* Responsive */
+        /* Responsive per Portfolio Page */
         @media (max-width: 1024px) {
             .portfolio-grid {
                 grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
                 gap: 30px;
                 padding: 0 30px 60px;
             }
-
-            .hero-title {
-                font-size: 36px;
-            }
-
-            .footer-content {
-                padding: 0 30px;
-                gap: 30px;
-            }
+            .hero-section .hero-title { font-size: 36px; }
         }
 
         @media (max-width: 768px) {
-            .side-menu {
-                width: 100vw;
-                right: -100vw;
-            }
-
-            .hero-section {
-                padding: 40px 20px 60px;
-            }
-
-            .hero-title {
-                font-size: 32px;
-                letter-spacing: 2px;
-            }
-
-            .hero-subtitle {
-                font-size: 18px;
-            }
-
-            .portfolio-filters {
-                padding: 30px 20px 40px;
-                gap: 15px;
-            }
-
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-                gap: 25px;
-                padding: 0 20px 50px;
-            }
-
-            .portfolio-item {
-                min-height: auto;
-            }
-
-            .coming-soon {
-                padding: 60px 20px;
-            }
-
-            .coming-soon-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .footer-content {
-                padding: 0 20px;
-                gap: 25px;
-                grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                width: 95%;
-                margin: 20px;
-            }
-
-            .modal-header, .modal-body {
-                padding: 20px;
-            }
+            .hero-section { padding: 40px 20px 60px; }
+            .hero-section .hero-title { font-size: 32px; letter-spacing: 2px; }
+            .hero-section .hero-subtitle { font-size: 18px; }
+            .portfolio-filters { padding: 30px 20px 40px; gap: 15px; }
+            .portfolio-grid { grid-template-columns: 1fr; gap: 25px; padding: 0 20px 50px; }
+            .portfolio-item { min-height: auto; }
+            .coming-soon { padding: 60px 20px; }
+            .coming-soon-grid { grid-template-columns: 1fr; gap: 20px; }
+            .modal-content { width: 95%; margin: 20px auto; /* Centering modal on small screens */ }
+            .modal-header, .modal-body { padding: 20px; }
         }
 
         @media (max-width: 480px) {
-            .portfolio-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-btn {
-                padding: 10px 16px;
-                font-size: 13px;
-            }
+            /* .portfolio-grid { grid-template-columns: 1fr; } Already covered by 768px rule */
+            .filter-btn { padding: 10px 16px; font-size: 13px; }
         }
     </style>
 </head>
 <body>
-    <!-- Effetti noise di sfondo -->
+    <!-- Effetti noise di sfondo (da style.css) -->
     <div class="noise-background"></div>
+    <div class="noise-overlay"></div>
+    <div class="noise-grain"></div>
 
     <!-- Header con menu hamburger -->
     <div class="header">
@@ -751,7 +453,7 @@
                 </div>
             </div>
 
-            <!-- Progetto 3 -->
+             <!-- Progetto 3 -->
             <div class="portfolio-item" data-category="concept" onclick="openModal('project3')">
                 <div class="portfolio-image"></div>
                 <div class="portfolio-content">
@@ -828,18 +530,18 @@
         <div class="coming-soon">
             <h3>Progetti in Sviluppo</h3>
             <p>Nuovi progetti e collaborazioni sono costantemente in fase di sviluppo. Ecco un'anteprima di ciò che sta arrivando.</p>
-            
+
             <div class="coming-soon-grid">
                 <div class="coming-soon-item">
                     <h4>Complesso Eco-Sostenibile</h4>
                     <p>Progetto residenziale a impatto zero con energie rinnovabili integrate</p>
                 </div>
-                
+
                 <div class="coming-soon-item">
                     <h4>Campus Universitario</h4>
                     <p>Nuove strutture didattiche con spazi flessibili e tecnologie innovative</p>
                 </div>
-                
+
                 <div class="coming-soon-item">
                     <h4>Riqualificazione Industriale</h4>
                     <p>Trasformazione di area industriale in distretto creativo e residenziale</p>
@@ -858,12 +560,222 @@
             <div class="modal-body">
                 <div class="modal-image-placeholder" id="modalImage">🏗️</div>
                 <p id="modalDescription">Descrizione dettagliata del progetto...</p>
-                <div id="modalTags"></div>
+                <div id="modalTags" class="portfolio-tags"></div> <!-- Added class for consistency -->
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer Standard -->
     <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
+        <div class="footer-links">
+            <a href="#" class="footer-link" data-popup="privacy">Privacy Policy</a>
+            <a href="#" class="footer-link" data-popup="cookie">Cookie Policy</a>
+            <a href="#" class="footer-link" data-popup="terms">Termini di Servizio</a>
+        </div>
+        <div class="footer-text">
+            Architetto Roberto Dolfini - Via del Leone 21 - n°albo OAR : 26585 - P.IVA 16120331000.
+        </div>
+        <p class="footer-text">Tutti i diritti riservati.</p>
+    </footer>
+
+    <!-- Script Menu Hamburger Standard -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const sideMenu = document.getElementById('sideMenu');
+        const overlay = document.getElementById('overlay');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        function toggleMenu() {
+            hamburger.classList.toggle('active');
+            sideMenu.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            sideMenu.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        hamburger.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', closeMenu);
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const section = e.target.getAttribute('data-section');
+                if (section === 'home') {
+                    window.location.href = 'landing_page.html';
+                } else if (section === 'portfolio') {
+                    window.location.href = 'portfolio_page.html';
+                } else if (section === 'resume') {
+                    window.location.href = 'resume_page.html';
+                } else if (section === 'contatti') {
+                    window.location.href = 'contact_page.html';
+                }
+                closeMenu();
+            });
+        });
+
+        // Combined ESC key listener for menu and project modal
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (sideMenu.classList.contains('active')) { // Prioritize closing menu
+                    closeMenu();
+                } else if (document.getElementById('projectModal').classList.contains('active')) { // Then project modal
+                    closeModal(); // Assumes closeModal is defined in portfolio-specific script
+                }
+            }
+        });
+    </script>
+
+    <!-- Script Specifici Portfolio (Modal, Filtri) -->
+    <script>
+        // Dati di esempio per i progetti (da sostituire con dati reali o da backend)
+        const projectData = {
+            project1: { title: "Villa Moderna Sostenibile", description: "Descrizione estesa della villa moderna...", tags: ["BIM", "Sostenibilità", "Revit"] },
+            project2: { title: "Centro Direzionale Smart", description: "Descrizione estesa del centro direzionale...", tags: ["Smart Building", "BIM 4D", "IoT"] },
+            project3: { title: "Habitat Verticale", description: "Descrizione estesa dell'habitat verticale...", tags: ["Concept", "Vertical Gardens", "Urban Living"] },
+            project4: { title: "Padiglione Parametrico", description: "Descrizione estesa del padiglione...", tags: ["Parametric", "Generative Design", "Grasshopper"] },
+            project5: { title: "Ristrutturazione Urbana", description: "Descrizione estesa della ristrutturazione...", tags: ["Restauro", "BIM Heritage", "3D Scan"] },
+            project6: { title: "Digital Twin Architecture", description: "Descrizione estesa del digital twin...", tags: ["Digital Twin", "AI", "IoT", "R&D"] }
+        };
+
+        const projectModal = document.getElementById('projectModal'); // Renamed to avoid conflict with policyPopup's 'modal'
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalTags = document.getElementById('modalTags');
+
+        function openModal(projectId) { // This is for Project Details
+            const project = projectData[projectId];
+            if (project) {
+                modalTitle.textContent = project.title;
+                modalDescription.textContent = project.description;
+                modalTags.innerHTML = '';
+                project.tags.forEach(tagText => {
+                    const tagElement = document.createElement('span');
+                    tagElement.className = 'portfolio-tag';
+                    tagElement.textContent = tagText;
+                    modalTags.appendChild(tagElement);
+                });
+                projectModal.classList.add('active');
+            }
+        }
+
+        function closeModal() { // This is for Project Details
+            projectModal.classList.remove('active');
+        }
+
+        // Gestione Filtri Portfolio
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                portfolioItems.forEach(item => {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (filter === 'all' || filter === itemCategory) {
+                        item.style.display = '';
+                        item.style.opacity = '0';
+                        setTimeout(() => {
+                           item.style.animation = 'fadeInUp 1s ease forwards';
+                           item.style.opacity = '1';
+                        }, 10);
+                    } else {
+                        item.style.animation = '';
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        portfolioItems.forEach((item, index) => {
+            if(item.style.display !== 'none'){
+                item.style.animationDelay = `${index * 0.2}s`;
+                item.style.animationName = 'fadeInUp';
+                item.style.animationDuration = '1s';
+                item.style.animationFillMode = 'forwards';
+                item.style.animationTimingFunction = 'ease';
+                item.style.opacity = '0';
+            }
+        });
+    </script>
+
+    <!-- Modal/Popup Policy Structure -->
+    <div id="policyPopup" class="popup-modal">
+        <div class="popup-modal-content">
+            <span class="popup-modal-close" id="closePolicyBtn">&times;</span>
+            <h3 id="popupTitle">Titolo Policy</h3>
+            <div id="popupBody">
+                <p>Il contenuto specifico della policy verrà caricato qui. L'utente potrà inserire il testo desiderato in questa sezione.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // --- Script per Policy Pop-up ---
+    // This script is placed after portfolio-specific scripts to ensure 'policyPopup' and other IDs are available
+    // and to avoid conflicts if portfolio scripts also use generic variable names like 'modal'.
+    const policyPopup = document.getElementById('policyPopup');
+    const popupTitle = document.getElementById('popupTitle'); // Already declared for project modal, ensure this is unique or scoped if needed
+    const popupBody = document.getElementById('popupBody');
+    const closePolicyBtn = document.getElementById('closePolicyBtn');
+    const footerPolicyLinks = document.querySelectorAll('.footer-link[data-popup]');
+
+    const policyTexts = {
+        privacy: {
+            title: "Privacy Policy",
+            content: "Questo è il testo placeholder per la Privacy Policy. L'utente potrà inserire qui il contenuto dettagliato."
+        },
+        cookie: {
+            title: "Cookie Policy",
+            content: "Questo è il testo placeholder per la Cookie Policy. L'utente potrà inserire qui il contenuto dettagliato."
+        },
+        terms: {
+            title: "Termini di Servizio",
+            content: "Questo è il testo placeholder per i Termini di Servizio. L'utente potrà inserire qui il contenuto dettagliato."
+        }
+    };
+
+    function openPolicyPopup(type) {
+        if (policyTexts[type]) {
+            // Assuming popupTitle and popupBody are unique IDs for the policy popup,
+            // or these variables are correctly scoped / re-declared if shared with project modal.
+            // For safety, let's re-select them here if they are specific to this modal.
+            document.getElementById('popupTitle').textContent = policyTexts[type].title;
+            document.getElementById('popupBody').innerHTML = `<p>${policyTexts[type].content}</p>`;
+            policyPopup.style.display = 'flex';
+        }
+    }
+
+    function closePolicyPopup() {
+        policyPopup.style.display = 'none';
+    }
+
+    footerPolicyLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+            const popupType = this.getAttribute('data-popup');
+            openPolicyPopup(popupType);
+        });
+    });
+
+    closePolicyBtn.addEventListener('click', closePolicyPopup);
+
+    window.addEventListener('click', function(event) {
+        if (event.target == policyPopup) {
+            closePolicyPopup();
+        }
+    });
+
+    // Adjusted ESC key listener for policy popup
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape' && policyPopup.style.display === 'flex') {
+            closePolicyPopup();
+        }
+    });
+    </script>
+</body>
+</html>
