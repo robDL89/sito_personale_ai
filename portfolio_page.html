@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Arch. Roberto Dolfini</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto Slab', serif;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header e Menu Hamburger - identico al resume */
+        .header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .hamburger {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            border: none;
+            padding: 0;
+            z-index: 1000;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 2px;
+            background: #555;
+            margin: 4px 0;
+            transition: all 0.3s ease;
+            transform-origin: center;
+            display: block;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(5px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-15px) rotate(-45deg);
+        }
+
+        .hamburger:hover span {
+            background: #888;
+        }
+
+        /* Menu Laterale */
+        .side-menu {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+            z-index: 999;
+            transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: -5px 0 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .side-menu.active {
+            right: 0;
+        }
+
+        .menu-content {
+            padding: 80px 40px 40px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #404040;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .menu-item:hover {
+            color: #ffffff;
+            padding-left: 10px;
+            border-bottom-color: #666;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Effetti noise di sfondo */
+        .noise-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.03;
+            background: 
+                radial-gradient(circle at 20% 80%, transparent 30%, rgba(255,255,255,0.03) 31%, rgba(255,255,255,0.03) 32%, transparent 33%),
+                radial-gradient(circle at 80% 20%, transparent 30%, rgba(255,255,255,0.03) 31%, rgba(255,255,255,0.03) 32%, transparent 33%),
+                radial-gradient(circle at 40% 40%, transparent 30%, rgba(255,255,255,0.02) 31%, rgba(255,255,255,0.02) 32%, transparent 33%);
+            background-size: 300px 300px, 250px 250px, 400px 400px;
+            animation: noiseShift 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes noiseShift {
+            0% { transform: translate(0px, 0px); }
+            50% { transform: translate(-10px, 5px); }
+            100% { transform: translate(2px, -2px); }
+        }
+
+        /* Layout principale Portfolio */
+        .portfolio-container {
+            min-height: 100vh;
+            padding: 80px 0 0;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 60px 40px 80px;
+            text-align: center;
+            border-bottom: 1px solid #404040;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-title {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+            background: linear-gradient(135deg, #f0f0f0, #cccccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.5s forwards;
+        }
+
+        .hero-description {
+            font-size: 16px;
+            color: #d0d0d0;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.7s forwards;
+        }
+
+        /* Filtri Portfolio */
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 40px 40px 60px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.9s forwards;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            background: rgba(40, 40, 40, 0.5);
+            border: 1px solid #404040;
+            color: #b0b0b0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 1px;
+            border-radius: 6px;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: rgba(60, 60, 60, 0.7);
+            border-color: #666;
+            color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        /* Griglia Portfolio */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            padding: 0 40px 80px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .portfolio-item {
+            background: rgba(30, 30, 30, 0.6);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            border: 1px solid #404040;
+            cursor: pointer;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            position: relative;
+        }
+
+        .portfolio-item:nth-child(1) { animation-delay: 0.2s; }
+        .portfolio-item:nth-child(2) { animation-delay: 0.4s; }
+        .portfolio-item:nth-child(3) { animation-delay: 0.6s; }
+        .portfolio-item:nth-child(4) { animation-delay: 0.8s; }
+        .portfolio-item:nth-child(5) { animation-delay: 1s; }
+        .portfolio-item:nth-child(6) { animation-delay: 1.2s; }
+
+        .portfolio-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: #666;
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #404040, #2a2a2a);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .portfolio-image::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 2px solid #666;
+            border-radius: 8px;
+            background: rgba(102, 102, 102, 0.1);
+        }
+
+        .portfolio-image::after {
+            content: "🏗️";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            opacity: 0.6;
+        }
+
+        .portfolio-content {
+            padding: 30px;
+        }
+
+        .portfolio-title {
+            font-size: 22px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: #f0f0f0;
+            letter-spacing: 1px;
+        }
+
+        .portfolio-category {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 15px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .portfolio-description {
+            font-size: 15px;
+            color: #d0d0d0;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .portfolio-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .portfolio-tag {
+            padding: 4px 12px;
+            background: rgba(60, 60, 60, 0.4);
+            border: 1px solid #505050;
+            font-size: 12px;
+            color: #b0b0b0;
+            border-radius: 4px;
+            font-weight: 300;
+        }
+
+        /* Sezione Coming Soon */
+        .coming-soon {
+            text-align: center;
+            padding: 80px 40px;
+            border-top: 1px solid #404040;
+            margin-top: 40px;
+        }
+
+        .coming-soon h3 {
+            font-size: 28px;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: #f0f0f0;
+            letter-spacing: 2px;
+        }
+
+        .coming-soon p {
+            font-size: 16px;
+            color: #b0b0b0;
+            max-width: 500px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .coming-soon-item {
+            padding: 25px;
+            background: rgba(40, 40, 40, 0.3);
+            border-radius: 8px;
+            border: 1px solid #404040;
+            transition: all 0.3s ease;
+        }
+
+        .coming-soon-item:hover {
+            background: rgba(50, 50, 50, 0.4);
+            border-color: #555;
+            transform: translateY(-3px);
+        }
+
+        .coming-soon-item h4 {
+            font-size: 18px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            color: #f0f0f0;
+        }
+
+        .coming-soon-item p {
+            font-size: 14px;
+            color: #b0b0b0;
+            margin: 0;
+        }
+
+        /* Footer - identico al resume */
+        .footer {
+            background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+            border-top: 1px solid #404040;
+            padding: 40px 0 30px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            align-items: start;
+        }
+
+        .footer-section h4 {
+            font-size: 18px;
+            font-weight: 400;
+            color: #f0f0f0;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .footer-section p, .footer-section li {
+            font-size: 14px;
+            color: #b0b0b0;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section li {
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .footer-section li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #666;
+        }
+
+        .footer-section a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: #f0f0f0;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #2a2a2a;
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            font-size: 12px;
+            color: #888;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animazioni */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal per dettagli progetto */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 12px;
+            max-width: 800px;
+            max-height: 90vh;
+            width: 90%;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 30px 40px 20px;
+            border-bottom: 1px solid #404040;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-close {
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            color: #f0f0f0;
+        }
+
+        .modal-body {
+            padding: 40px;
+        }
+
+        .modal h3 {
+            font-size: 24px;
+            font-weight: 400;
+            color: #f0f0f0;
+            margin: 0;
+        }
+
+        .modal-image-placeholder {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #404040, #2a2a2a);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            opacity: 0.6;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: 30px;
+                padding: 0 30px 60px;
+            }
+
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .footer-content {
+                padding: 0 30px;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .side-menu {
+                width: 100vw;
+                right: -100vw;
+            }
+
+            .hero-section {
+                padding: 40px 20px 60px;
+            }
+
+            .hero-title {
+                font-size: 32px;
+                letter-spacing: 2px;
+            }
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .portfolio-filters {
+                padding: 30px 20px 40px;
+                gap: 15px;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 0 20px 50px;
+            }
+
+            .portfolio-item {
+                min-height: auto;
+            }
+
+            .coming-soon {
+                padding: 60px 20px;
+            }
+
+            .coming-soon-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .footer-content {
+                padding: 0 20px;
+                gap: 25px;
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 20px;
+            }
+
+            .modal-header, .modal-body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-btn {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Effetti noise di sfondo -->
+    <div class="noise-background"></div>
+
+    <!-- Header con menu hamburger -->
+    <div class="header">
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- Menu laterale -->
+    <div class="side-menu" id="sideMenu">
+        <div class="menu-content">
+            <div class="menu-item" data-section="home">Home</div>
+            <div class="menu-item" data-section="portfolio">Portfolio</div>
+            <div class="menu-item" data-section="resume">Resume</div>
+            <div class="menu-item" data-section="contatti">Contatti</div>
+        </div>
+    </div>
+
+    <!-- Overlay per chiudere menu -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Contenuto principale Portfolio -->
+    <div class="portfolio-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Portfolio</h1>
+            <p class="hero-subtitle">Progetti di Architettura Digitale</p>
+            <p class="hero-description">
+                Una selezione dei miei progetti più significativi che rappresentano l'integrazione tra progettazione tradizionale e innovazione digitale. Ogni progetto racconta una storia di ricerca, sperimentazione e passione per l'architettura del futuro.
+            </p>
+        </div>
+
+        <!-- Filtri Portfolio -->
+        <div class="portfolio-filters">
+            <button class="filter-btn active" data-filter="all">Tutti i Progetti</button>
+            <button class="filter-btn" data-filter="residential">Residenziale</button>
+            <button class="filter-btn" data-filter="commercial">Commerciale</button>
+            <button class="filter-btn" data-filter="concept">Concept Design</button>
+            <button class="filter-btn" data-filter="academic">Progetti Accademici</button>
+        </div>
+
+        <!-- Griglia Portfolio -->
+        <div class="portfolio-grid" id="portfolioGrid">
+            <!-- Progetto 1 -->
+            <div class="portfolio-item" data-category="residential" onclick="openModal('project1')">
+                <div class="portfolio-image"></div>
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Villa Moderna Sostenibile</h3>
+                    <p class="portfolio-category">Architettura Residenziale</p>
+                    <p class="portfolio-description">
+                        Progetto di villa unifamiliare che integra principi di sostenibilità ambientale con design contemporaneo. Focus su efficienza energetica e integrazione con il paesaggio naturale.
+                    </p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">BIM</span>
+                        <span class="portfolio-tag">Sostenibilità</span>
+                        <span class="portfolio-tag">3D Modeling</span>
+                        <span class="portfolio-tag">Revit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progetto 2 -->
+            <div class="portfolio-item" data-category="commercial" onclick="openModal('project2')">
+                <div class="portfolio-image"></div>
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Centro Direzionale Smart</h3>
+                    <p class="portfolio-category">Architettura Commerciale</p>
+                    <p class="portfolio-description">
+                        Complesso direzionale innovativo con sistemi smart building integrati. Progettazione BIM completa con focus su flessibilità degli spazi e tecnologie digitali avanzate.
+                    </p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Smart Building</span>
+                        <span class="portfolio-tag">BIM 4D</span>
+                        <span class="portfolio-tag">IoT</span>
+                        <span class="portfolio-tag">Parametric Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progetto 3 -->
+            <div class="portfolio-item" data-category="concept" onclick="openModal('project3')">
+                <div class="portfolio-image"></div>
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Habitat Verticale</h3>
+                    <p class="portfolio-category">Concept Design</p>
+                    <p class="portfolio-description">
+                        Concept di edificio residenziale ad alta densità con giardini verticali integrati. Ricerca sulla qualità abitativa urbana e l'integrazione della natura nell'architettura contemporanea.
+                    </p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Concept</span>
+                        <span class="portfolio-tag">Vertical Gardens</span>
+                        <span class="portfolio-tag">Urban Living</span>
+                        <span class="portfolio-tag">3ds Max</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progetto 4 -->
+            <div class="portfolio-item" data-category="academic" onclick="openModal('project4')">
+                <div class="portfolio-image"></div>
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Padiglione Parametrico</h3>
+                    <p class="portfolio-category">Progetto Accademico</p>
+                    <p class="portfolio-description">
+                        Tesi di laurea magistrale: struttura temporanea generata attraverso algoritmi parametrici. Esplorazione delle possibilità creative del design computazionale in architettura.
+                    </p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Parametric</span>
+                        <span class="portfolio-tag">Generative Design</span>
+                        <span class="portfolio-tag">Grasshopper</span>
+                        <span class="portfolio-tag">Tesi</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progetto 5 -->
+            <div class="portfolio-item" data-category="residential" onclick="openModal('project5')">
+                <div class="portfolio-image"></div>
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Ristrutturazione Urbana</h3>
+                    <p class="portfolio-category">Ristrutturazione</p>
+                    <p class="portfolio-description">
+                        Riqualificazione di edificio storico del centro urbano con integrazione di tecnologie moderne. Equilibrio tra conservazione del patrimonio e innovazione abitativa.
+                    </p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Restauro</span>
+                        <span class="portfolio-tag">BIM Heritage</span>
+                        <span class="portfolio-tag">Riqualificazione</span>
+                        <span class="portfolio-tag">3D Scan</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progetto 6 -->
+            <div class="portfolio-item" data-category="concept" onclick="openModal('project6')">
+                <div class="portfolio-image"></div>
+                <div class="portfolio-content">
+                    <h3 class="portfolio-title">Digital Twin Architecture</h3>
+                    <p class="portfolio-category">Ricerca & Sviluppo</p>
+                    <p class="portfolio-description">
+                        Progetto di ricerca sulla creazione di gemelli digitali per edifici esistenti. Integrazione di sensori IoT, AI e modellazione BIM per monitoraggio prestazionale in tempo reale.
+                    </p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Digital Twin</span>
+                        <span class="portfolio-tag">AI</span>
+                        <span class="portfolio-tag">IoT</span>
+                        <span class="portfolio-tag">R&D</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Coming Soon -->
+        <div class="coming-soon">
+            <h3>Progetti in Sviluppo</h3>
+            <p>Nuovi progetti e collaborazioni sono costantemente in fase di sviluppo. Ecco un'anteprima di ciò che sta arrivando.</p>
+            
+            <div class="coming-soon-grid">
+                <div class="coming-soon-item">
+                    <h4>Complesso Eco-Sostenibile</h4>
+                    <p>Progetto residenziale a impatto zero con energie rinnovabili integrate</p>
+                </div>
+                
+                <div class="coming-soon-item">
+                    <h4>Campus Universitario</h4>
+                    <p>Nuove strutture didattiche con spazi flessibili e tecnologie innovative</p>
+                </div>
+                
+                <div class="coming-soon-item">
+                    <h4>Riqualificazione Industriale</h4>
+                    <p>Trasformazione di area industriale in distretto creativo e residenziale</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per dettagli progetto -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Titolo Progetto</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image-placeholder" id="modalImage">🏗️</div>
+                <p id="modalDescription">Descrizione dettagliata del progetto...</p>
+                <div id="modalTags"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
